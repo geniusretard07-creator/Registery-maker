@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UP Property Registry Document Generator</title>
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Segoe UI,Tahoma,sans-serif;
+}
+
+body{
+background:#f4f6f9;
+padding:20px;
+}
+
+.container{
+max-width:1200px;
+margin:auto;
+}
+
+.card{
+background:white;
+padding:20px;
+border-radius:10px;
+box-shadow:0 3px 10px rgba(0,0,0,0.1);
+margin-bottom:20px;
+}
+
+h1,h2,h3{
+margin-bottom:15px;
+color:#1f2937;
+}
+
+.grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:15px;
+}
+
+label{
+font-size:14px;
+font-weight:600;
+display:block;
+margin-bottom:5px;
+}
+
+input,select,textarea{
+width:100%;
+padding:10px;
+border:1px solid #ccc;
+border-radius:6px;
+margin-bottom:12px;
+}
+
+button{
+padding:10px 18px;
+border:none;
+border-radius:6px;
+cursor:pointer;
+margin-right:10px;
+}
+
+.primary{
+background:#2563eb;
+color:white;
+}
+
+.success{
+background:#16a34a;
+color:white;
+}
+
+.warning{
+background:#f59e0b;
+color:white;
+}
+
+.danger{
+background:#dc2626;
+color:white;
+}
+
+.hidden{
+display:none;
+}
+
+.step{
+display:none;
+}
+
+.step.active{
+display:block;
+}
+
+.preview{
+height:700px;
+overflow:auto;
+white-space:pre-wrap;
+background:#fff;
+border:1px solid #ddd;
+padding:30px;
+line-height:1.8;
+font-family:"Times New Roman", serif;
+}
+
+.registry-buttons{
+display:flex;
+gap:15px;
+flex-wrap:wrap;
+}
+
+.registry-btn{
+flex:1;
+min-width:220px;
+padding:18px;
+font-size:16px;
+font-weight:bold;
+}
+
+.progress{
+margin-bottom:15px;
+font-weight:bold;
+color:#2563eb;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+<div class="card">
+<h1>UP Property Registry Document Generator</h1>
+
+<h3>Select Registry Type</h3>
+
+<div class="registry-buttons">
+<button class="primary registry-btn"
+onclick="selectRegistry('sale')">
+Sale Deed (बैनामा)
+</button>
+
+<button class="success registry-btn"
+onclick="selectRegistry('gift')">
+Gift Deed (दानपत्र)
+</button>
+
+<button class="warning registry-btn"
+onclick="selectRegistry('lease')">
+Lease Deed (पट्टा)
+</button>
+</div>
+</div>
+
+<div id="wizard" class="hidden">
+
+<div class="card">
+<div class="progress" id="progressText">
+Step 1 of 5
+</div>
+
+<!-- STEP 1 -->
+<div class="step active">
+
+<h2>Seller / Transferor Details</h2>
+
+<div class="grid">
+
+<div>
+<label>Name</label>
+<input id="seller_name">
+</div>
+
+<div>
+<label>Father Name</label>
+<input id="seller_father">
+</div>
+
+<div>
+<label>Address</label>
+<input id="seller_address">
+</div>
+
+<div>
+<label>PAN</label>
+<input id="seller_pan">
+</div>
+
+<div>
+<label>Aadhaar</label>
+<input id="seller_aadhaar">
+</div>
+
+</div>
+
+</div>
+
+<!-- STEP 2 -->
+<div class="step">
+
+<h2>Buyer / Transferee Details</h2>
+
+<div class="grid">
+
+<div>
+<label>Name</label>
+<input id="buyer_name">
+</div>
+
+<div>
+<label>Father Name</label>
+<input id="buyer_father">
+</div>
+
+<div>
+<label>Address</label>
+<input id="buyer_address">
+</div>
+
+<div>
+<label>PAN</label>
+<input id="buyer_pan">
+</div>
+
+<div>
+<label>Aadhaar</label>
+<input id="buyer_aadhaar">
+</div>
+
+</div>
+
+</div>
+
+<!-- STEP 3 -->
+<div class="step">
+
+<h2>Property Details</h2>
+
+<div class="grid">
+
+<div>
+<label>Plot / House No.</label>
+<input id="plot_no">
+</div>
+
+<div>
+<label>Mauza / Village</label>
+<input id="village">
+</div>
+
+<div>
+<label>Tehsil</label>
+<input id="tehsil">
+</div>
+
+<div>
+<label>District</label>
+<input id="district">
+</div>
+
+<div>
+<label>North Boundary</label>
+<input id="north">
+</div>
+
+<div>
+<label>South Boundary</label>
+<input id="south">
+</div>
+
+<div>
+<label>East Boundary</label>
+<input id="east">
+</div>
+
+<div>
+<label>West Boundary</label>
+<input id="west">
+</div>
+
+</div>
+
+</div>
+
+<!-- STEP 4 -->
+<div class="step">
+
+<h2>Financial Details</h2>
+
+<div class="grid">
+
+<div>
+<label>Total Consideration Value</label>
+<input id="value">
+</div>
+
+<div>
+<label>Stamp Duty Paid</label>
+<input id="stamp_duty">
+</div>
+
+<div>
+<label>Registration Fee</label>
+<input id="registration_fee">
+</div>
+
+<div>
+<label>Mode of Payment</label>
+<input id="payment_mode">
+</div>
+
+</div>
+
+</div>
+
+<!-- STEP 5 -->
+<div class="step">
+
+<h2>Witnesses</h2>
+
+<div class="grid">
+
+<div>
+<label>Witness 1 Name</label>
+<input id="witness1_name">
+</div>
+
+<div>
+<label>Witness 1 Address</label>
+<input id="witness1_address">
+</div>
+
+<div>
+<label>Witness 2 Name</label>
+<input id="witness2_name">
+</div>
+
+<div>
+<label>Witness 2 Address</label>
+<input id="witness2_address">
+</div>
+
+</div>
+
+</div>
+
+<br>
+
+<button class="warning" onclick="prevStep()">Previous</button>
+<button class="primary" onclick="nextStep()">Next</button>
+<button class="success" onclick="generateDocument()">Generate Document</button>
+
+</div>
+
+<div class="card">
+
+<h2>Document Preview</h2>
+
+<div id="preview" class="preview">
+Generated document will appear here...
+</div>
+
+<br>
+
+<button class="primary" onclick="copyDocument()">
+Copy to Clipboard
+</button>
+
+<button class="success" onclick="downloadTXT()">
+Download TXT
+</button>
+
+<button class="warning" onclick="window.print()">
+Print / Save PDF
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+let currentStep = 0;
+let registryType = "sale";
+
+const steps = document.querySelectorAll(".step");
+
+function selectRegistry(type){
+registryType = type;
+document.getElementById("wizard").classList.remove("hidden");
+}
+
+function showStep(index){
+
+steps.forEach(step=>step.classList.remove("active"));
+
+steps[index].classList.add("active");
+
+document.getElementById("progressText").innerText =
+`Step ${index+1} of ${steps.length}`;
+}
+
+function nextStep(){
+
+if(currentStep < steps.length-1){
+currentStep++;
+showStep(currentStep);
+}
+
+saveData();
+}
+
+function prevStep(){
+
+if(currentStep>0){
+currentStep--;
+showStep(currentStep);
+}
+}
+
+function getValue(id){
+return document.getElementById(id).value.trim();
+}
+
+function validate(){
+
+const required = [
+"seller_name",
+"buyer_name",
+"plot_no"
+];
+
+for(let field of required){
+
+if(!getValue(field)){
+
+alert("Please fill all required fields.");
+
+return false;
+}
+}
+
+return true;
+}
+
+function getData(){
+
+return {
+
+seller_name:getValue("seller_name"),
+seller_father:getValue("seller_father"),
+seller_address:getValue("seller_address"),
+seller_pan:getValue("seller_pan"),
+seller_aadhaar:getValue("seller_aadhaar"),
+
+buyer_name:getValue("buyer_name"),
+buyer_father:getValue("buyer_father"),
+buyer_address:getValue("buyer_address"),
+buyer_pan:getValue("buyer_pan"),
+buyer_aadhaar:getValue("buyer_aadhaar"),
+
+plot_no:getValue("plot_no"),
+village:getValue("village"),
+tehsil:getValue("tehsil"),
+district:getValue("district"),
+
+north:getValue("north"),
+south:getValue("south"),
+east:getValue("east"),
+west:getValue("west"),
+
+value:getValue("value"),
+stamp_duty:getValue("stamp_duty"),
+registration_fee:getValue("registration_fee"),
+payment_mode:getValue("payment_mode"),
+
+witness1_name:getValue("witness1_name"),
+witness1_address:getValue("witness1_address"),
+
+witness2_name:getValue("witness2_name"),
+witness2_address:getValue("witness2_address")
+};
+}
+
+function interpolate(template,data){
+
+return template.replace(
+/{{(.*?)}}/g,
+(match,key)=>data[key.trim()] || ""
+);
+}
+
+const templates = {
+
+sale: `
+                 SALE DEED (बैनामा)
+
+This Sale Deed is executed on this day between
+Shri {{seller_name}} S/o {{seller_father}},
+Resident of {{seller_address}}
+(PAN: {{seller_pan}}, Aadhaar: {{seller_aadhaar}})
+hereinafter referred to as the "Vendor".
+
+AND
+
+Shri {{buyer_name}} S/o {{buyer_father}},
+Resident of {{buyer_address}}
+(PAN: {{buyer_pan}}, Aadhaar: {{buyer_aadhaar}})
+hereinafter referred to as the "Purchaser".
+
+WHEREAS the Vendor is the lawful owner and in possession of property bearing Plot/House No. {{plot_no}}
+situated at Village/Mauza {{village}},
+Tehsil {{tehsil}},
+District {{district}}.
+
+PROPERTY BOUNDARIES
+
+North : {{north}}
+South : {{south}}
+East  : {{east}}
+West  : {{west}}
+
+The Vendor has agreed to sell and the Purchaser has agreed to purchase the above property for a total consideration of ₹{{value}}.
+
+Stamp Duty Paid : ₹{{stamp_duty}}
+Registration Fee : ₹{{registration_fee}}
+Mode of Payment : {{payment_mode}}
+
+The Vendor hereby transfers all rights, title, interest and possession in favour of the Purchaser.
+
+Witnesses:
+
+1. {{witness1_name}}
+   {{witness1_address}}
+
+2. {{witness2_name}}
+   {{witness2_address}}
+
+Vendor Signature: __________________
+
+Purchaser Signature: __________________
+`,
+
+gift: `
+                  GIFT DEED (दानपत्र)
+
+I, {{seller_name}}, S/o {{seller_father}},
+resident of {{seller_address}},
+out of my free will and affection,
+hereby gift the property bearing Plot No. {{plot_no}}
+situated at {{village}}, {{tehsil}}, {{district}}
+to {{buyer_name}}.
+
+Property Boundaries:
+
+North : {{north}}
+South : {{south}}
+East : {{east}}
+West : {{west}}
+
+The Donee accepts the gift and takes possession thereof.
+
+Witnesses:
+
+1. {{witness1_name}}
+2. {{witness2_name}}
+
+Donor Signature: __________________
+
+Donee Signature: __________________
+`,
+
+lease: `
+                 LEASE DEED (पट्टा)
+
+This Lease Deed is made between
+{{seller_name}} (Lessor)
+and
+{{buyer_name}} (Lessee).
+
+Property:
+Plot No. {{plot_no}}
+Village {{village}}
+Tehsil {{tehsil}}
+District {{district}}
+
+Boundaries:
+
+North : {{north}}
+South : {{south}}
+East : {{east}}
+West : {{west}}
+
+Lease Value: ₹{{value}}
+
+Mode of Payment:
+{{payment_mode}}
+
+Witnesses:
+
+1. {{witness1_name}}
+
+2. {{witness2_name}}
+
+Lessor Signature: __________________
+
+Lessee Signature: __________________
+`
+};
+
+function generateDocument(){
+
+if(!validate()) return;
+
+const data = getData();
+
+const finalText =
+interpolate(
+templates[registryType],
+data
+);
+
+document.getElementById("preview").textContent =
+finalText;
+
+saveData();
+}
+
+function copyDocument(){
+
+const text =
+document.getElementById("preview").textContent;
+
+navigator.clipboard.writeText(text);
+
+alert("Document copied.");
+}
+
+function downloadTXT(){
+
+const text =
+document.getElementById("preview").textContent;
+
+const blob =
+new Blob([text], {type:"text/plain"});
+
+const a =
+document.createElement("a");
+
+a.href = URL.createObjectURL(blob);
+
+a.download =
+registryType + "_deed.txt";
+
+a.click();
+}
+
+function saveData(){
+
+localStorage.setItem(
+"registryData",
+JSON.stringify(getData())
+);
+}
+
+function loadData(){
+
+const saved =
+localStorage.getItem("registryData");
+
+if(!saved) return;
+
+const data =
+JSON.parse(saved);
+
+Object.keys(data).forEach(key=>{
+
+const el =
+document.getElementById(key);
+
+if(el){
+el.value = data[key];
+}
+});
+}
+
+loadData();
+
+document.querySelectorAll("input")
+.forEach(input=>{
+
+input.addEventListener(
+"input",
+saveData
+);
+});
+
+</script>
+
+</body>
+</html>
